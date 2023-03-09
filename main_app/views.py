@@ -8,3 +8,10 @@ def home(request):
 
 def about(request):
   return render(request, 'about.html')
+
+# Add new view
+
+def toolbox_index(request):
+  # We pass data to a template very much like we did in Express!
+  return render(request, 'toolboxes/index.html'
+  )
