@@ -73,12 +73,12 @@ def add_song(request):
 
 
 def edit_song(request, pk):
-    song = get_object_or_404(Song, pk=pk)
+    song = Song.objects.get(pk=pk)
     if request.method == 'POST':
         form = SongForm(request.POST, instance=song)
         if form.is_valid():
             form.save()
-            return redirect('my_song')
+            return redirect('view_song', pk=pk)
     else:
         form = SongForm(instance=song)
     return render(request, 'edit_song.html', {'form': form})
