@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Heart Radio</h1>
+  
+  <div>
+    <label for="station-select">Select a station:</label>
+    <select id="station-select">
+      {% for station in stations %}
+        <option value="{{ station.url }}">{{ station.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  
+  <div>
+    <h2>Now playing:</h2>
+    <audio id="audio-player" controls autoplay>
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Make an AJAX request to get the list of available stations
+      $.ajax({
+        url: '/get_radio_stations/',
+        type: 'GET',
+        success: function(data) {
+          // Populate the station select dropdown with the available stations
+          $.each(data.stations, function(index, station) {
+            $('#station-select').append($('<option>', {
+              value: station.url,
+              text: station.name
+            }));
+          });
+          // Set the source of the audio player to the first available station
+          $('#audio-player').attr('src', data.stations[0].url);
+        },
+        error: function() {
+          console.log('Error getting radio stations.');
+        }
+      });
+      
+      // Play the selected station when it changes
+      $('#station-select').on('change', function() {
+        var stationUrl = $(this).val();
+        $('#audio-player').attr('src', stationUrl);
+      });
+    });
+  </script>
+{% endblock %}

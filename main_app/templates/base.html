@@ -1,26 +1,28 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>AutoDoctor</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <title>MusicSea</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <header class="navbar-fixed">
     <nav>
       <div class="nav-wrapper">
-        <ul>
-          <li><a href="/" class="left brand-logo">&nbsp;&nbsp;AutoDoctor</a></li>
-        </ul>
-        <ul class="right">
-            <li><a href="/about">About</a></li>
-            <!-- new markup below -->
-            <li><a href="/toolbox">View All My ToolBoxes</a></li>
+        <a href="/" class="brand-logo left">&nbsp;&nbsp;MusicSea</a>
+        <ul id="nav-mobile" class="right">
+          <li><a href="/about">About</a></li>
+          <!-- new markup below -->
+          <li><a href="{% url 'my_songs' %}">My Songs</a></li>
+
+          <li><a href="{% url 'heart_radio' %}">Listen to MusicSea</a></li>
         </ul>
       </div>
     </nav>
@@ -29,8 +31,50 @@
     {% block content %}
     {% endblock %}
   </main>
+  {% block card_styles %}
+    <style>
+      .card {
+        margin-bottom: 20px;
+      }
+    </style>
+  {% endblock %}
+
   <footer class="page-footer">
-    <div class="right">All Rights Reserved, &copy; 2023 AutoDoctor &nbsp;</div>
+    <div class="right">
+      <audio id="audio-player" controls autoplay>
+        Your browser does not support the audio element.
+      </audio>
+      All Rights Reserved, &copy; 2023 AutoDoctor &nbsp;
+    </div>
   </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  {% block scripts %}
+  {% endblock %}
+  <script>
+    $(document).ready(function() {
+      // Make an AJAX request to get the list of available stations
+      $.ajax({
+        url: '/get_radio_stations/',
+        type: 'GET',
+        success: function(data) {
+          // Set the source of the audio player to the first available station
+          $('#audio-player').attr('src', data.stations[0].url);
+
+          // Play the selected station when it changes
+          $('#audio-player').on('ended', function() {
+            var nextStation = $('#station-select option:selected').next();
+            if (nextStation.length) {
+              $('#station-select').val(nextStation.val());
+              $('#audio-player').attr('src', nextStation.val());
+              $('#audio-player')[0].play();
+            }
+          });
+        },
+        error: function() {
+          console.log('Error getting radio stations.');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,56 @@
+{% extends 'musicsea/base.html' %}
+
+{% block content %}
+  <h1>Listen to MusicSea</h1>
+  <div class="row">
+    <div class="col s12">
+      <div class="input-field">
+        <select id="station-select">
+          {% for station in stations %}
+            <option value="{{ station.name }}" data-url="{{ station.url }}">{{ station.name }}</option>
+          {% endfor %}
+        </select>
+        <label>Select a station:</label>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      // Make an AJAX request to get the list of available stations
+      $.ajax({
+        url: '/get_radio_stations/',
+        type: 'GET',
+        success: function(data) {
+          // Populate the select element with the available stations
+          var select = $('#station-select');
+          $.each(data.stations, function(index, station) {
+            select.append($('<option>', {
+              value: station.name,
+              'data-url': station.url,
+              text: station.name
+            }));
+          });
+
+          // Set the source of the audio player to the first available station
+          var audioPlayer = $('#audio-player')[0];
+          var firstOption = select.find('option:first');
+          audioPlayer.src = firstOption.data('url');
+          audioPlayer.play();
+
+          // Play the selected station when it changes
+          select.on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            audioPlayer.src = selectedOption.data('url');
+            audioPlayer.play();
+          });
+        },
+        error: function() {
+          console.log('Error getting radio stations.');
+        }
+      });
+    });
+  </script>
+{% endblock %}
