@@ -152,7 +152,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
@@ -168,10 +168,10 @@ if not DEBUG:
 LOGIN_REDIRECT_URL = '/my_songs/'
 # Add this variable to specify where logging out redirects to
 LOGOUT_REDIRECT_URL = '/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles/bootstrap/static'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS = [
+   # os.path.join(BASE_DIR, 'staticfiles/bootstrap/static'),
+#]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Default primary key field type
