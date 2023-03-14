@@ -3,13 +3,13 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse
 from django.http import HttpResponseNotAllowed
-from django.contrib import messages
 from django.urls import reverse
+from django.http import request
 
 
-
+from django.shortcuts import render
 #from django import forms
 from .models import Song,FavoriteSong
 from .forms import SongForm, FavoriteSongForm
@@ -107,16 +107,14 @@ def view_song(request, pk):
 
 
 def add_favorite_song(request, song_id):
-    song = get_object_or_404(Song, pk=song_id)
-    user = request.user
-    try:
-        favorite_song = FavoriteSong.objects.get(user=user, song=song)
-        messages.warning(request, f'{song} is already added to your favorites')
-    except FavoriteSong.DoesNotExist:
-        favorite_song = FavoriteSong(user=user, song=song)
+    if request.method == 'POST':
+        song = get_object_or_404(Song, pk=song_id)
+        user = request.user
+        favorite_song = FavoriteSong(song=song, user=user)
         favorite_song.save()
-        messages.success(request, f'{song} has been added to your favorites')
-    return HttpResponseRedirect(reverse('main_app:song_detail', args=[song_id]))
+        return redirect('add_favoritesong')
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 
 
