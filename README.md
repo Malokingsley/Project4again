@@ -19,7 +19,7 @@ Tech used
 - JS
 - JSON
 - PostSQL
-- iheart radio API
+- iheart radio A.P.I
 
 ![alt text](Images/Untitled-8.jpg)
 
