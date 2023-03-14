@@ -111,7 +111,7 @@ WSGI_APPLICATION = 'project4again.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(     
-    default='postgresql://postgres:postgres@localhost:5432/main_app_song',conn_max_age=600   
+    default='postgresql://Malokingsley:v2_428Uq_9LEZPBhaFPg6f4QguGWzVrk@db.bit.io:5432/Malokingsley/MusicSea',conn_max_age=600   
     
 )}
 
