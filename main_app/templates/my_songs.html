@@ -30,6 +30,13 @@
             <div class="card-action">
               <a href="{% url 'edit_song' song.pk %}">Edit</a>
               <a href="{% url 'delete_song' song.pk %}">Delete</a>
+              <form method="POST" action="{% url 'add_favoritesong' song.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="song_id" value="{{ song.pk }}">
+                <button type="submit" class="btn-floating halfway-fab waves-effect waves-light red">
+                  <i class="material-icons">favorite</i>
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -38,4 +45,21 @@
       <p>No songs found.</p>
     {% endif %}
   </div>
+
+  {% block scripts %}
+    <script>
+      $(document).ready(function() {
+        $('.btn-floating.halfway-fab').click(function() {
+          var button = $(this);
+          var song_id = button.closest('.card-action').find('input[name="song_id"]').val();
+          $.post('/song/' + song_id + '/add_favoritesong/', function(data) {
+            if (data.added) {
+              button.addClass('favorite-added');
+            }
+          });
+        });
+      });
+    </script>
+  {% endblock %}
+
 {% endblock %}

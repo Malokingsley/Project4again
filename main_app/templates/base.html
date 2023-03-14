@@ -20,10 +20,19 @@
         <ul id="nav-mobile" class="right">
           <li><a href="/about">About</a></li>
           <!-- new markup below -->
-          <li><a href="{% url 'my_songs' %}">My Songs</a></li>
-
-          <li><a href="{% url 'heart_radio' %}">Listen to MusicSea</a></li>
+          <!-- changes below -->
+          <ul class="right">
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'my_songs' %}">My MusicSea</a></li>
+              <li><a href="{% url 'logout' %}">Log Out</a></li>
+            {% else %}
+            <li><a href="{% url 'heart_radio' %}">Listen to MusicSea</a></li>
+              <li><a href="{% url 'login' %}">Log In</a></li>
+            {% endif %}
+          </ul>
         </ul>
+          
+
       </div>
     </nav>
   </header>

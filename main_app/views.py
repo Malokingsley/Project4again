@@ -1,14 +1,26 @@
-import requests
+
 #from bs4 import BeautifulSoup
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.http import HttpResponse
-from django.shortcuts import render
-#from django import forms
-from .models import Song
-from .forms import SongForm
+from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponseNotAllowed
+from django.contrib import messages
+from django.urls import reverse
 
+
+
+#from django import forms
+from .models import Song,FavoriteSong
+from .forms import SongForm, FavoriteSongForm
+# we want to automatically log in signed up users
+from django.contrib.auth import login
+# we want to use the builtin form for our custom view for sign up
+from django.contrib.auth.forms import UserCreationForm
+# Import the login_required decorator
+from django.contrib.auth.decorators import login_required
+# Import the mixin for class-based views
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -60,7 +72,6 @@ def my_songs(request):
     form = SongForm()
     return render(request, 'my_songs.html', {'songs': songs, 'search': search, 'form': form})
 
-
 def add_song(request):
     if request.method == 'POST':
         form = SongForm(request.POST)
@@ -93,3 +104,23 @@ def delete_song(request, pk):
 def view_song(request, pk):
     song = Song.objects.get(pk=pk)
     return render(request, 'view_song.html', {'song': song})
+
+
+def add_favorite_song(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+    user = request.user
+    try:
+        favorite_song = FavoriteSong.objects.get(user=user, song=song)
+        messages.warning(request, f'{song} is already added to your favorites')
+    except FavoriteSong.DoesNotExist:
+        favorite_song = FavoriteSong(user=user, song=song)
+        favorite_song.save()
+        messages.success(request, f'{song} has been added to your favorites')
+    return HttpResponseRedirect(reverse('main_app:song_detail', args=[song_id]))
+
+
+
+def delete_favoritesong(request, pk):
+    favoritesong = get_object_or_404(request.user.favoritesongs, pk=pk)
+    favoritesong.delete()
+    return redirect('my_favoritesongs')

@@ -1,12 +1,14 @@
 from django import forms
-from .models import Song
+from .models import Song, FavoriteSong
+
+
 
 class SongForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ['artist', 'album', 'song', 'release_year']
 
-class SongForm(forms.ModelForm):
+class FavoriteSongForm(forms.ModelForm):
     class Meta:
-        model = Song
-        fields = ['song', 'artist', 'album']
+        model = FavoriteSong
+        fields = ['song']
