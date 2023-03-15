@@ -168,9 +168,9 @@ if not DEBUG:
 LOGIN_REDIRECT_URL = '/my_songs/'
 # Add this variable to specify where logging out redirects to
 LOGOUT_REDIRECT_URL = '/'
-#STATICFILES_DIRS = [
-   # os.path.join(BASE_DIR, 'staticfiles/bootstrap/static'),
-#]
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'main_app/static/static')
+]
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 

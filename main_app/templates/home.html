@@ -1,8 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <h1>MusicSea</h1>
 <h3> The new wave</h3>
+    <div id="slideshow">
+        <div class="carousel">
+          <a class="carousel-item" href="#one!"><img src="{% static 'Images2/images-0.jpeg' %}"></a>    
+          <a class="carousel-item" href="#two!"><img src="{% static 'Images2/images-3.jpeg' %}"></a>
+          <a class="carousel-item" href="#three!"><img src="{% static 'Images2/images-17.jpeg'%}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-11.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-15.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-1.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-19.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-9.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-8.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-20.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-4.jpeg' %}"></a>
+          <a class="carousel-item"><img src="{% static 'Images2/images-7.jpeg' %}"></a>
+        </div>
+      </div>
+      
+    
+    
+
+<!-- Include jQuery, Materialize CSS and JavaScript files -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.carousel');
+        var options = {
+            fullWidth: true,
+            indicators: true,
+            autoplay: true,
+            interval: 3000,
+            numVisible: 1 // show only one image at a time
+        };
+        var instances = M.Carousel.init(elems, options);
+    });
+    </script>
+    
+
 <hr>
 <footer>All Rights Reserved, &copy; 2023 MusicSea</footer>
 
